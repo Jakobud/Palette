@@ -1,0 +1,19 @@
+{
+    "name": "jakobud/palette",
+    "description": "Color manipulation package",
+    "license": "MIT",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Jake Wilson",
+            "email": "jake.e.wilson@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-0": {
+            "Jakobud\\Palette": "src/"
+        }
+    },
+    "require": {}
+}
