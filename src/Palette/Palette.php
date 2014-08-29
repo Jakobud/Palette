@@ -4,8 +4,9 @@
 
 class Palette
 {
-	const REGEX_HEX = "/^\#?[0-9A-F]{6}$/";
-	const REGEX_HEX_SHORT = "/^\#?[0-9A-F]{3}$/";
+	// Regex patterns
+	const REGEX_HEX = "/^\#?[0-9a-f]{6}$/";
+	const REGEX_HEX_SHORT = "/^\#?[0-9a-f]{3}$/";
 	const REGEX_RGB_DEC = "/^rgb\([0-255]+,[0-255]+,[0-255]+\)$/";
 
 	public function __construct($color = null)
