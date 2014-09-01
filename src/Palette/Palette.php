@@ -333,8 +333,6 @@ class Palette
 			$this->green = (int) hexdec(substr($color, 2, 2));
 			$this->blue = (int) hexdec(substr($color, 4));
 
-			var_dump("hex");
-
 		} else if ( preg_match(self::REGEX_HEX_ALPHA, $color) ) {
 			/**
 			 * Hex format with alpha
@@ -345,8 +343,6 @@ class Palette
 			$this->blue = (int) hexdec(substr($color, 4, 2));
 			$this->alpha = (float) round(hexdec(substr($color, 6))/255, $this->precision);
 
-			var_dump("hex with alpha");
-
 		} else if ( preg_match(self::REGEX_HEX_SHORT, $color) ) {
 			/**
 			 * Shorthand hex format
@@ -355,8 +351,6 @@ class Palette
 			$this->red = (int) hexdec(substr($color, 0, 1).substr($color, 0, 1));
 			$this->green = (int) hexdec(substr($color, 1, 1).substr($color, 1, 1));
 			$this->blue = (int) hexdec(substr($color, 2).substr($color, 2));
-
-			var_dump("hex short");
 
 		} else if ( preg_match(self::REGEX_HEX_SHORT_ALPHA, $color) ) {
 			/**
@@ -368,8 +362,6 @@ class Palette
 			$this->blue = (int) hexdec(substr($color, 2, 1).substr($color, 2, 1));
 			$this->alpha = (float) round(hexdec(substr($color, 3).substr($color, 3))/255, $this->precision);
 
-			var_dump("hex short with alpha");
-
 		} else if ( preg_match(self::REGEX_RGB_DEC, $color) ) {
 			/**
 			 * RGB Decimal format
@@ -380,8 +372,6 @@ class Palette
 			$this->red = (int) $pieces[0];
 			$this->green = (int) $pieces[1];
 			$this->blue = (int) $pieces[2];
-
-			var_dump("rgb dec");
 
 		} else if ( preg_match(self::REGEX_RGBA_DEC, $color) ) {
 			/**
@@ -395,15 +385,11 @@ class Palette
 			$this->blue = (int) $pieces[2];
 			$this->alpha = (float) round($pieces[3], $this->precision);
 
-			var_dump("rgba dec");
-
 		} else if ( array_key_exists($color, $this->cssColorNames) ) {
 			// CSS Color Name format
 			$this->red = (int) hexdec(substr($this->cssColorNames[$color], 0, 2));
 			$this->green = (int) hexdec(substr($this->cssColorNames[$color], 2, 2));
 			$this->blue = (int) hexdec(substr($this->cssColorNames[$color], 4));
-
-			var_dump("color name");
 
 		} else if ( array_key_exists($color, $this->cssHexWords) ) {
 			// CSS Hex Word format
@@ -411,7 +397,6 @@ class Palette
 			$this->green = (int) hexdec(substr($this->cssHexWords[$color], 2, 2));
 			$this->blue = (int) hexdec(substr($this->cssHexWords[$color], 4));
 
-			var_dump("hex word");
 		} else {
 			var_dump("no match");
 		}
@@ -427,7 +412,9 @@ class Palette
 	 */
 	public function hex()
 	{
-		return str_pad(dechex($this->red), 2, STR_PAD_LEFT).str_pad(dechex($this->green), 2, STR_PAD_LEFT).str_pad(dechex($this->blue), 2, STR_PAD_LEFT);
+		return str_pad(dechex($this->red), 2, STR_PAD_LEFT).
+			str_pad(dechex($this->green), 2, STR_PAD_LEFT).
+			str_pad(dechex($this->blue), 2, STR_PAD_LEFT);
 	}
 
 	/**
@@ -464,6 +451,22 @@ class Palette
 	public function cssShorthandHex()
 	{
 		return "#".$this->shorthandHex();
+	}
+
+	/**
+	 * Output the color in web safe hex format (rrggbb)
+	 * @return [type]
+	 */
+	public function webSafe()
+	{
+		return dechex(round($this->red/51)*51).
+			dechex(round($this->green/51)*51).
+			dechex(round($this->blue/51)*51);
+	}
+
+	public function cssWebSafe()
+	{
+		return "#".$this->webSafe();
 	}
 
 }
