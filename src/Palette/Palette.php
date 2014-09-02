@@ -386,13 +386,21 @@ class Palette
 			$this->alpha = (float) round($pieces[3], $this->precision);
 
 		} else if ( array_key_exists($color, $this->cssColorNames) ) {
-			// CSS Color Name format
+			/**
+			 * CSS Color Name format
+			 * Example: darkblue
+			 * @var string
+			 */
 			$this->red = (int) hexdec(substr($this->cssColorNames[$color], 0, 2));
 			$this->green = (int) hexdec(substr($this->cssColorNames[$color], 2, 2));
 			$this->blue = (int) hexdec(substr($this->cssColorNames[$color], 4));
 
 		} else if ( array_key_exists($color, $this->cssHexWords) ) {
-			// CSS Hex Word format
+			/**
+			 * Hex Word format
+			 * Example: badass
+			 * @var string
+			 */
 			$this->red = (int) hexdec(substr($this->cssHexWords[$color], 0, 2));
 			$this->green = (int) hexdec(substr($this->cssHexWords[$color], 2, 2));
 			$this->blue = (int) hexdec(substr($this->cssHexWords[$color], 4));
