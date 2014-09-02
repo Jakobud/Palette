@@ -407,32 +407,32 @@ class Palette
 	}
 
 	/**
-	 * Output the color in hex format (rrggbb)
+	 * Output the color in hex format (#rrggbb)
 	 * @return string
 	 */
 	public function hex()
 	{
-		return str_pad(dechex($this->red), 2, STR_PAD_LEFT).
+		return "#".str_pad(dechex($this->red), 2, STR_PAD_LEFT).
 			str_pad(dechex($this->green), 2, STR_PAD_LEFT).
 			str_pad(dechex($this->blue), 2, STR_PAD_LEFT);
 	}
 
 	/**
-	 * Output the color in css hex format (#rrggbb)
+	 * Output the color in hex format with alpha (#rrggbbaa)
 	 * @return string
 	 */
-	public function cssHex()
+	public function hexAlpha()
 	{
-		return "#".$this->hex();
+		return $this->hex.str_pad(dechex($this->alpha), 2, STR_PAD_LEFT);
 	}
 
 	/**
-	 * Output the color in short hex format (rgb)
+	 * Output the color in short hex format (#rgb)
 	 * @return string
 	 */
 	public function shorthandHex()
 	{
-		$output = '';
+		$output = '#';
 		foreach( [$this->red, $this->green, $this->blue] as $color) {
 			$remainder = $color%17;
 			if ( $remainder > 7 ) {
@@ -444,29 +444,19 @@ class Palette
 		return $output;
 	}
 
-	/**
-	 * Output the color in css shorthand hex format (#rgb)
-	 * @return string
-	 */
-	public function cssShorthandHex()
+	public function shorthandHexAlpha()
 	{
-		return "#".$this->shorthandHex();
+		return $this->shorthandHex.str_pad(dechex($this->alpha), 2, STR_PAD_LEFT);
 	}
 
 	/**
-	 * Output the color in web safe hex format (rrggbb)
+	 * Output the color in web safe hex format (#rrggbb)
 	 * @return [type]
 	 */
-	public function webSafe()
+	public function webSafeHex()
 	{
-		return dechex(round($this->red/51)*51).
+		return "#".dechex(round($this->red/51)*51).
 			dechex(round($this->green/51)*51).
 			dechex(round($this->blue/51)*51);
 	}
-
-	public function cssWebSafe()
-	{
-		return "#".$this->webSafe();
-	}
-
 }
