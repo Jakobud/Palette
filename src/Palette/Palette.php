@@ -4,6 +4,7 @@
 
 class Palette
 {
+	private $alpha = 1.0;
 	private $red;
 	private $green;
 	private $blue;
@@ -12,7 +13,6 @@ class Palette
 	private $saturationB;
 	private $brightness;
 	private $lightness;
-	private $alpha = 1.0;
 	private $precision = 2;
 
 	// Regex patterns
@@ -327,7 +327,7 @@ class Palette
 
 	public function __construct($color = null)
 	{
-		// Normalize string (lowercase, remove whitespace)
+		// Normalize input string (to lowercase, remove whitespace)
 		$color = preg_replace("/\s+/", "", strtolower(trim($color, '#')));
 
 		// Determine input color format
@@ -336,7 +336,7 @@ class Palette
 			 * Hex format
 			 * Example: ff00ff
 			 */
-			$red = (int) hexdec(substr($color, 0, 2));
+			$this->red = (int) hexdec(substr($color, 0, 2));
 			$this->green = (int) hexdec(substr($color, 2, 2));
 			$this->blue = (int) hexdec(substr($color, 4));
 
@@ -345,7 +345,7 @@ class Palette
 			 * Hex format with alpha
 			 * Example: ff00ff80
 			 */
-			$red = (int) hexdec(substr($color, 0, 2));
+			$this->red = (int) hexdec(substr($color, 0, 2));
 			$this->green = (int) hexdec(substr($color, 2, 2));
 			$this->blue = (int) hexdec(substr($color, 4, 2));
 			$this->alpha = (float) round(hexdec(substr($color, 6))/255, $this->precision);
@@ -355,7 +355,7 @@ class Palette
 			 * Shorthand hex format
 			 * Example: f0f
 			 */
-			$red = (int) hexdec(substr($color, 0, 1).substr($color, 0, 1));
+			$this->red = (int) hexdec(substr($color, 0, 1).substr($color, 0, 1));
 			$this->green = (int) hexdec(substr($color, 1, 1).substr($color, 1, 1));
 			$this->blue = (int) hexdec(substr($color, 2).substr($color, 2));
 
@@ -364,7 +364,7 @@ class Palette
 			 * Shorthand hex format with alpha
 			 * Example: f0f8
 			 */
-			$red = (int) hexdec(substr($color, 0, 1).substr($color, 0, 1));
+			$this->red = (int) hexdec(substr($color, 0, 1).substr($color, 0, 1));
 			$this->green = (int) hexdec(substr($color, 1, 1).substr($color, 1, 1));
 			$this->blue = (int) hexdec(substr($color, 2, 1).substr($color, 2, 1));
 			$this->alpha = (float) round(hexdec(substr($color, 3).substr($color, 3))/255, $this->precision);
@@ -454,7 +454,7 @@ class Palette
 			 * Example: darkblue
 			 * @var string
 			 */
-			$red = (int) hexdec(substr($this->cssColorNames[$color], 0, 2));
+			$this->red = (int) hexdec(substr($this->cssColorNames[$color], 0, 2));
 			$this->green = (int) hexdec(substr($this->cssColorNames[$color], 2, 2));
 			$this->blue = (int) hexdec(substr($this->cssColorNames[$color], 4));
 
@@ -464,16 +464,94 @@ class Palette
 			 * Example: badass
 			 * @var string
 			 */
-			$red = (int) hexdec(substr($this->cssHexWords[$color], 0, 2));
+			$this->red = (int) hexdec(substr($this->cssHexWords[$color], 0, 2));
 			$this->green = (int) hexdec(substr($this->cssHexWords[$color], 2, 2));
 			$this->blue = (int) hexdec(substr($this->cssHexWords[$color], 4));
 
 		} else {
-			var_dump("no match");
+			// No matches found for input color format, throw exception
+			throw new InvalidArgumentException("Unsupported Color Format");
 		}
 
 		unset($this->cssColorNames, $this->cssHexWords);
 		var_dump($this);
+
+	}
+
+	private function calculateAttributes($red, $green, $blue)
+	{
+
+	}
+
+	/**
+	 * Convert RGB to HSL
+	 * @param  int $r
+	 * @param  int $g
+	 * @param  int $b
+	 * @return [type]
+	 */
+	public function rgbToHsl($r, $g, $b)
+	{
+		return array('red'=>1,'green'=>2,'blue'=>3);
+	}
+
+	/**
+	 * Convert RGB to HSB
+	 * @param  int $r
+	 * @param  int $g
+	 * @param  int $b
+	 * @return [type]
+	 */
+	private function rgbToHsb($r, $g, $b)
+	{
+
+	}
+
+	/**
+	 * Convert HSL to RGB
+	 * @param  int $h
+	 * @param  int $s
+	 * @param  int $l
+	 * @return [type]
+	 */
+	private function hslToRgb($h, $s, $l)
+	{
+
+	}
+
+	/**
+	 *  Convert HSB to RGB
+	 * @param  int $h
+	 * @param  int $s
+	 * @param  int $b
+	 * @return [type]
+	 */
+	private function hsbToRgb($h, $s, $b)
+	{
+
+	}
+
+	/**
+	 * Convert HSL to HSB
+	 * @param  int $h
+	 * @param  int $s
+	 * @param  int $l
+	 * @return [type]
+	 */
+	private function hslToHsb($h, $s, $l)
+	{
+
+	}
+
+	/**
+	 * Convert HSB to HSL
+	 * @param  int $h
+	 * @param  int $s
+	 * @param  int $b
+	 * @return [type]
+	 */
+	private function hsbToHsl($h, $s, $b)
+	{
 
 	}
 
