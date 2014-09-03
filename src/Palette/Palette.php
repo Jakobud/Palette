@@ -459,7 +459,7 @@ class Palette
 
 	/**
 	 * Output the color in web safe hex format (#rrggbb)
-	 * @return [type]
+	 * @return string
 	 */
 	public function webSafeHex()
 	{
