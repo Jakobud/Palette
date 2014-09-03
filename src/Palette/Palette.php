@@ -7,6 +7,11 @@ class Palette
 	private $red;
 	private $green;
 	private $blue;
+	private $hue;
+	private $saturationL;
+	private $saturationB;
+	private $brightness;
+	private $lightness;
 	private $alpha = 1.0;
 	private $precision = 2;
 
@@ -17,6 +22,8 @@ class Palette
 	const REGEX_HEX_SHORT_ALPHA = "/^\#?[0-9a-f]{4}$/";
 	const REGEX_RGB_DEC = "/^rgb\(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]),([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]),([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\)$/";
 	const REGEX_RGBA_DEC = "/^rgba\(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]),([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]),([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]),(0?(\.\d+)?|1(\.0+)?)\)$/";
+	const REGEX_HSL = "/^hsl\(([0-9]|[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|360),([0-9]|[1-9][0-9]|100)%,([0-9]|[1-9][0-9]|100)%\)$/";
+	const REGEX_HSLA = "/^hsla\(([0-9]|[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|360),([0-9]|[1-9][0-9]|100)%,([0-9]|[1-9][0-9]|100)%,(0?(\.\d+)?|1(\.0+)?)\)$/";
 
 	// http://www.w3.org/TR/css3-color/
 	private $cssColorNames = array(
@@ -329,7 +336,7 @@ class Palette
 			 * Hex format
 			 * Example: ff00ff
 			 */
-			$this->red = (int) hexdec(substr($color, 0, 2));
+			$red = (int) hexdec(substr($color, 0, 2));
 			$this->green = (int) hexdec(substr($color, 2, 2));
 			$this->blue = (int) hexdec(substr($color, 4));
 
@@ -338,7 +345,7 @@ class Palette
 			 * Hex format with alpha
 			 * Example: ff00ff80
 			 */
-			$this->red = (int) hexdec(substr($color, 0, 2));
+			$red = (int) hexdec(substr($color, 0, 2));
 			$this->green = (int) hexdec(substr($color, 2, 2));
 			$this->blue = (int) hexdec(substr($color, 4, 2));
 			$this->alpha = (float) round(hexdec(substr($color, 6))/255, $this->precision);
@@ -348,7 +355,7 @@ class Palette
 			 * Shorthand hex format
 			 * Example: f0f
 			 */
-			$this->red = (int) hexdec(substr($color, 0, 1).substr($color, 0, 1));
+			$red = (int) hexdec(substr($color, 0, 1).substr($color, 0, 1));
 			$this->green = (int) hexdec(substr($color, 1, 1).substr($color, 1, 1));
 			$this->blue = (int) hexdec(substr($color, 2).substr($color, 2));
 
@@ -357,7 +364,7 @@ class Palette
 			 * Shorthand hex format with alpha
 			 * Example: f0f8
 			 */
-			$this->red = (int) hexdec(substr($color, 0, 1).substr($color, 0, 1));
+			$red = (int) hexdec(substr($color, 0, 1).substr($color, 0, 1));
 			$this->green = (int) hexdec(substr($color, 1, 1).substr($color, 1, 1));
 			$this->blue = (int) hexdec(substr($color, 2, 1).substr($color, 2, 1));
 			$this->alpha = (float) round(hexdec(substr($color, 3).substr($color, 3))/255, $this->precision);
@@ -369,7 +376,7 @@ class Palette
 			 */
 			$color = str_replace(['rgb(',')'], '', $color);
 			$pieces = explode(',', $color);
-			$this->red = (int) $pieces[0];
+			$red = (int) $pieces[0];
 			$this->green = (int) $pieces[1];
 			$this->blue = (int) $pieces[2];
 
@@ -380,10 +387,66 @@ class Palette
 			 */
 			$color = str_replace(['rgba(',')'], '', $color);
 			$pieces = explode(',', $color);
-			$this->red = (int) $pieces[0];
+			$red = (int) $pieces[0];
 			$this->green = (int) $pieces[1];
 			$this->blue = (int) $pieces[2];
 			$this->alpha = (float) round($pieces[3], $this->precision);
+
+		} else if ( preg_match(self::REGEX_HSL, $color) ) {
+			/**
+			 * HSL Format
+			 * Example: hsl(300,50%,75%)
+			 * http://www.brandonheyer.com/2013/03/27/convert-hsl-to-rgb-and-rgb-to-hsl-via-php/
+			 */
+			$color = str_replace(['hsl(',')','%'], '', $color);
+			$pieces = explode(',', $color);
+			$this->hue = (int) $pieces[0];
+			$this->saturationL = (int) $pieces[1];
+			$this->lightness = (int) $pieces[2];
+
+			$hue = $this->hue / 360;
+			$saturation = $this->saturationL / 100;
+			$lightness = $this->lightness / 100;
+
+			$c = ( 1 - abs($lightness * 2 - 1) ) * $saturation;
+			$x = $c * ( 1 - abs( fmod( ( $hue/60 ), 2 ) -1 ) );
+			$m = $lightness - ( $c / 2 );
+
+			if ( $this->hue < 60 ) {
+				$red = $c;
+				$green = $x;
+				$blue = 0;
+			} else if ( $this->hue < 120 ) {
+				$red = $x;
+				$green = $c;
+				$blue = 0;
+			} else if ( $this->hue < 180 ) {
+				$red = 0;
+				$green = $c;
+				$blue = $x;
+			} else if ( $this->hue < 240 ) {
+				$red = 0;
+				$green = $x;
+				$blue = $c;
+			} else if ( $this->hue < 300 ) {
+				$red = $x;
+				$green = 0;
+				$blue = $c;
+			} else {
+				$red = $c;
+				$green = 0;
+				$blue = $x;
+			}
+			$this->red = floor(( $red + $m ) * 255);
+			$this->green = floor(( $green + $m ) * 255);
+			$this->blue = floor(( $blue + $m ) * 255);
+
+		} else if ( preg_match(self::REGEX_HSLA, $color) ) {
+			/**
+			 * HSLA Format
+			 * Example: hsla(145,30%,49%,0.5)
+			 */
+			$color = str_replace(['hsl(',')'], '', $color);
 
 		} else if ( array_key_exists($color, $this->cssColorNames) ) {
 			/**
@@ -391,7 +454,7 @@ class Palette
 			 * Example: darkblue
 			 * @var string
 			 */
-			$this->red = (int) hexdec(substr($this->cssColorNames[$color], 0, 2));
+			$red = (int) hexdec(substr($this->cssColorNames[$color], 0, 2));
 			$this->green = (int) hexdec(substr($this->cssColorNames[$color], 2, 2));
 			$this->blue = (int) hexdec(substr($this->cssColorNames[$color], 4));
 
@@ -401,7 +464,7 @@ class Palette
 			 * Example: badass
 			 * @var string
 			 */
-			$this->red = (int) hexdec(substr($this->cssHexWords[$color], 0, 2));
+			$red = (int) hexdec(substr($this->cssHexWords[$color], 0, 2));
 			$this->green = (int) hexdec(substr($this->cssHexWords[$color], 2, 2));
 			$this->blue = (int) hexdec(substr($this->cssHexWords[$color], 4));
 
@@ -420,7 +483,7 @@ class Palette
 	 */
 	public function hex()
 	{
-		return "#".str_pad(dechex($this->red), 2, STR_PAD_LEFT).
+		return "#".str_pad(dechex($red), 2, STR_PAD_LEFT).
 			str_pad(dechex($this->green), 2, STR_PAD_LEFT).
 			str_pad(dechex($this->blue), 2, STR_PAD_LEFT);
 	}
@@ -441,7 +504,7 @@ class Palette
 	public function shorthandHex()
 	{
 		$output = '#';
-		foreach( [$this->red, $this->green, $this->blue] as $color) {
+		foreach( [$red, $this->green, $this->blue] as $color) {
 			$remainder = $color%17;
 			if ( $remainder > 7 ) {
 				$output .= dechex($color-$remainder+17)[0];
@@ -463,7 +526,7 @@ class Palette
 	 */
 	public function webSafeHex()
 	{
-		return "#".dechex(round($this->red/51)*51).
+		return "#".dechex(round($red/51)*51).
 			dechex(round($this->green/51)*51).
 			dechex(round($this->blue/51)*51);
 	}
