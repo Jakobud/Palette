@@ -327,10 +327,10 @@ class Palette
 
 	public function __construct($color = null)
 	{
-		// Normalize input string (to lowercase, remove whitespace)
+			// Normalize input string (to lowercase, remove whitespace)
 		$color = preg_replace("/\s+/", "", strtolower(trim($color, '#')));
 
-		// Determine input color format
+			// Determine input color format
 		if ( preg_match(self::REGEX_HEX, $color) ) {
 			/**
 			 * Hex format
@@ -395,7 +395,7 @@ class Palette
 		} else if ( preg_match(self::REGEX_HSL, $color) ) {
 			/**
 			 * HSL Format
-			 * Example: hsl(300,50%,75%)
+			 * Example: hsl(325,50%,75%)
 			 * http://www.brandonheyer.com/2013/03/27/convert-hsl-to-rgb-and-rgb-to-hsl-via-php/
 			 */
 			$color = str_replace(['hsl(',')','%'], '', $color);
@@ -403,43 +403,10 @@ class Palette
 			$this->hue = (int) $pieces[0];
 			$this->saturationL = (int) $pieces[1];
 			$this->lightness = (int) $pieces[2];
-
-			$hue = $this->hue / 360;
-			$saturation = $this->saturationL / 100;
-			$lightness = $this->lightness / 100;
-
-			$c = ( 1 - abs($lightness * 2 - 1) ) * $saturation;
-			$x = $c * ( 1 - abs( fmod( ( $hue/60 ), 2 ) -1 ) );
-			$m = $lightness - ( $c / 2 );
-
-			if ( $this->hue < 60 ) {
-				$red = $c;
-				$green = $x;
-				$blue = 0;
-			} else if ( $this->hue < 120 ) {
-				$red = $x;
-				$green = $c;
-				$blue = 0;
-			} else if ( $this->hue < 180 ) {
-				$red = 0;
-				$green = $c;
-				$blue = $x;
-			} else if ( $this->hue < 240 ) {
-				$red = 0;
-				$green = $x;
-				$blue = $c;
-			} else if ( $this->hue < 300 ) {
-				$red = $x;
-				$green = 0;
-				$blue = $c;
-			} else {
-				$red = $c;
-				$green = 0;
-				$blue = $x;
-			}
-			$this->red = floor(( $red + $m ) * 255);
-			$this->green = floor(( $green + $m ) * 255);
-			$this->blue = floor(( $blue + $m ) * 255);
+			extract($this->hslToRgb($this->hue, $this->saturationL, $this->lightness));
+			$this->red = $red;
+			$this->green = $green;
+			$this->blue = $blue;
 
 		} else if ( preg_match(self::REGEX_HSLA, $color) ) {
 			/**
@@ -478,11 +445,6 @@ class Palette
 
 	}
 
-	private function calculateAttributes($red, $green, $blue)
-	{
-
-	}
-
 	/**
 	 * Convert RGB to HSL
 	 * @param  int $r
@@ -492,7 +454,7 @@ class Palette
 	 */
 	public function rgbToHsl($r, $g, $b)
 	{
-		return array('red'=>1,'green'=>2,'blue'=>3);
+
 	}
 
 	/**
@@ -514,9 +476,55 @@ class Palette
 	 * @param  int $l
 	 * @return [type]
 	 */
-	private function hslToRgb($h, $s, $l)
+	private function hslToRgb($hue, $saturation, $lightness)
 	{
+		if ($saturation == 0) {
+			$red = $lightness * 255;
+			$green = $lightness * 255;
+			$blue = $lightness * 255;
+		} else {
+			$hue /= 360;
+			$saturation /= 100;
+			$lightness /= 100;
 
+			if ($lightness < 0.5) {
+				$var_2 = $lightness * (1 + $saturation);
+			} else {
+				$var_2 = ($lightness + $saturation) - ($saturation * $lightness);
+			};
+
+			$var_1 = 2 * $lightness - $var_2;
+
+			$red = (int) round(255 * $this->hue2Color($var_1,$var_2, $hue + (1 / 3)));
+			$green = (int) round(255 * $this->hue2Color($var_1,$var_2, $hue));
+			$blue = (int) round(255 * $this->hue2Color($var_1,$var_2, $hue - (1 / 3)));
+		};
+		return compact('red','green','blue');
+	}
+
+	private function hue2Color($v1,$v2,$vh)
+	{
+		if ($vh < 0) {
+			$vh += 1;
+		};
+
+		if ($vh > 1) {
+			$vh -= 1;
+		};
+
+		if ((6 * $vh) < 1) {
+			return ($v1 + ($v2 - $v1) * 6 * $vh);
+		};
+
+		if ((2 * $vh) < 1) {
+			return ($v2);
+		};
+
+		if ((3 * $vh) < 2) {
+			return ($v1 + ($v2 - $v1) * ((2 / 3 - $vh) * 6));
+		};
+
+		return $v1;
 	}
 
 	/**
@@ -562,8 +570,8 @@ class Palette
 	public function hex()
 	{
 		return "#".str_pad(dechex($red), 2, STR_PAD_LEFT).
-			str_pad(dechex($this->green), 2, STR_PAD_LEFT).
-			str_pad(dechex($this->blue), 2, STR_PAD_LEFT);
+		str_pad(dechex($this->green), 2, STR_PAD_LEFT).
+		str_pad(dechex($this->blue), 2, STR_PAD_LEFT);
 	}
 
 	/**
@@ -605,7 +613,7 @@ class Palette
 	public function webSafeHex()
 	{
 		return "#".dechex(round($red/51)*51).
-			dechex(round($this->green/51)*51).
-			dechex(round($this->blue/51)*51);
+		dechex(round($this->green/51)*51).
+		dechex(round($this->blue/51)*51);
 	}
 }
