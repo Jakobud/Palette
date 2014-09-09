@@ -1,6 +1,6 @@
 <?php
 
-// namespace Palette;
+namespace Palette;
 
 class Palette
 {
