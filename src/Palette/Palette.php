@@ -395,7 +395,7 @@ class Palette
 			$this->blue = (int) hexdec(substr($color, 4));
 			extract($this->rgbToHsl($this->red, $this->green, $this->blue));
 			$this->hue = $hue;
-			$this->saturationL = $saturation;
+			$this->hslSaturation = $saturation;
 			$this->lightness = $lightness;
 
 		} else if ( preg_match(self::REGEX_HEX_ALPHA, $color) ) {
@@ -409,7 +409,7 @@ class Palette
 			$this->alpha = (float) round(hexdec(substr($color, 6))/255, $this->precision);
 			extract($this->rgbToHsl($this->red, $this->green, $this->blue));
 			$this->hue = $hue;
-			$this->saturationL = $saturation;
+			$this->hslSaturation = $saturation;
 			$this->lightness = $lightness;
 
 		} else if ( preg_match(self::REGEX_HEX_SHORT, $color) ) {
@@ -422,7 +422,7 @@ class Palette
 			$this->blue = (int) hexdec(substr($color, 2).substr($color, 2));
 			extract($this->rgbToHsl($this->red, $this->green, $this->blue));
 			$this->hue = $hue;
-			$this->saturationL = $saturation;
+			$this->hslSaturation = $saturation;
 			$this->lightness = $lightness;
 
 		} else if ( preg_match(self::REGEX_HEX_SHORT_ALPHA, $color) ) {
@@ -436,7 +436,7 @@ class Palette
 			$this->alpha = (float) round(hexdec(substr($color, 3).substr($color, 3))/255, $this->precision);
 			extract($this->rgbToHsl($this->red, $this->green, $this->blue));
 			$this->hue = $hue;
-			$this->saturationL = $saturation;
+			$this->hslSaturation = $saturation;
 			$this->lightness = $lightness;
 
 		} else if ( preg_match(self::REGEX_RGB_DEC, $color) ) {
@@ -451,7 +451,7 @@ class Palette
 			$this->blue = (int) $pieces[2];
 			extract($this->rgbToHsl($this->red, $this->green, $this->blue));
 			$this->hue = $hue;
-			$this->saturationL = $saturation;
+			$this->hslSaturation = $saturation;
 			$this->lightness = $lightness;
 
 		} else if ( preg_match(self::REGEX_RGBA_DEC, $color) ) {
@@ -467,7 +467,7 @@ class Palette
 			$this->alpha = (float) round($pieces[3], $this->precision);
 			extract($this->rgbToHsl($this->red, $this->green, $this->blue));
 			$this->hue = $hue;
-			$this->saturationL = $saturation;
+			$this->hslSaturation = $saturation;
 			$this->lightness = $lightness;
 
 		} else if ( preg_match(self::REGEX_HSL, $color) ) {
@@ -479,9 +479,9 @@ class Palette
 			$color = str_replace(['hsl(',')','%'], '', $color);
 			$pieces = explode(',', $color);
 			$this->hue = (int) $pieces[0];
-			$this->saturationL = (int) $pieces[1];
+			$this->hslSaturation = (int) $pieces[1];
 			$this->lightness = (int) $pieces[2];
-			extract($this->hslToRgb($this->hue, $this->saturationL, $this->lightness));
+			$this->hslToRgb($this->hue, $this->hslSaturation, $this->lightness);
 			// $this->red = $red;
 			// $this->green = $green;
 			// $this->blue = $blue;
@@ -504,7 +504,7 @@ class Palette
 			$this->blue = (int) hexdec(substr($this->cssColorNames[$color], 4));
 			extract($this->rgbToHsl($this->red, $this->green, $this->blue));
 			$this->hue = $hue;
-			$this->saturationL = $saturation;
+			$this->hslSaturation = $saturation;
 			$this->lightness = $lightness;
 
 		} else if ( array_key_exists($color, $this->cssHexWords) ) {
@@ -518,7 +518,7 @@ class Palette
 			$this->blue = (int) hexdec(substr($this->cssHexWords[$color], 4));
 			extract($this->rgbToHsl($this->red, $this->green, $this->blue));
 			$this->hue = $hue;
-			$this->saturationL = $saturation;
+			$this->hslSaturation = $saturation;
 			$this->lightness = $lightness;
 
 		} else {
