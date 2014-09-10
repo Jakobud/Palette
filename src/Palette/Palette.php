@@ -574,7 +574,7 @@ class Palette
 			};
 		};
 
-		return array('hue'=>(int)round($hue*360), 'saturation'=>round($saturation*100), 'lightness'=>round($lightness*100));
+		return array('hue'=>(int)round($hue*360), 'saturation'=>(int)round($saturation*100), 'lightness'=>(int)round($lightness*100));
 	}
 
 	/**
