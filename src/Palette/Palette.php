@@ -33,7 +33,7 @@ class Palette
 	private $blue;
 
 	/**
-	 * Hue
+	 * HSL/HSV/HSB Hue
 	 * Value between 0 and 360
 	 * @var iintegernt
 	 */
@@ -44,16 +44,28 @@ class Palette
 	 * Value between 0 and 100
 	 * @var integer
 	 */
-	private $saturationL;
-	private $saturationB;
-	private $brightness;
+	private $hslSaturation;
 
 	/**
-	 * Lightness percentage
+	 * HSL Lightness percentage
 	 * Value between 0 and 100
 	 * @var integer
 	 */
 	private $lightness;
+
+	/**
+	 * HSV Saturation percentage
+	 * Value between 0 and 100
+	 * @var integer
+	 */
+	private $hsvSaturation;
+
+	/**
+	 * HSV Value percentage
+	 * Value between 0 and 100
+	 * @var integer
+	 */
+	private $value;
 
 	/**
 	 * Decimal Precision for float values
