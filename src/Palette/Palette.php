@@ -4,15 +4,61 @@ namespace Palette;
 
 class Palette
 {
+	/**
+	 * Alpha
+	 * Value between 0.0 (transparent) and 1.0 (opaque)
+	 * @var float
+	 */
 	private $alpha = 1.0;
+
+	/**
+	 * Red
+	 * Value between 0 and 255
+	 * @var integer
+	 */
 	private $red;
+
+	/**
+	 * Green
+	 * Value between 0 and 255
+	 * @var integer
+	 */
 	private $green;
+
+	/**
+	 * Blue
+	 * Value between 0 and 255
+	 * @var integer
+	 */
 	private $blue;
+
+	/**
+	 * Hue
+	 * Value between 0 and 360
+	 * @var iintegernt
+	 */
 	private $hue;
+
+	/**
+	 * HSL Saturation percentage
+	 * Value between 0 and 100
+	 * @var integer
+	 */
 	private $saturationL;
 	private $saturationB;
 	private $brightness;
+
+	/**
+	 * Lightness percentage
+	 * Value between 0 and 100
+	 * @var integer
+	 */
 	private $lightness;
+
+	/**
+	 * Decimal Precision for float values
+	 * @var integer
+	 */
 	private $precision = 2;
 
 	// Regex patterns
