@@ -71,7 +71,11 @@ class Palette
 	const REGEX_HSL = "/^hsl\(([0-9]|[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|360),([0-9]|[1-9][0-9]|100)%,([0-9]|[1-9][0-9]|100)%\)$/";
 	const REGEX_HSLA = "/^hsla\(([0-9]|[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|360),([0-9]|[1-9][0-9]|100)%,([0-9]|[1-9][0-9]|100)%,(0?(\.\d+)?|1(\.0+)?)\)$/";
 
-	// http://www.w3.org/TR/css3-color/
+	/**
+	 * CSS Color Names
+	 * http://www.w3.org/TR/css3-color/
+	 * @var array
+	 */
 	private $cssColorNames = array(
 		'aliceblue' => 'F0F8FF',
 		'antiquewhite' => 'FAEBD7',
@@ -239,7 +243,11 @@ class Palette
 		'yellowgreen' => '9ACD32',
 	);
 
-	// http://hexwords.info/
+	/**
+	 * CSS Hex Words
+	 * http://hexwords.info/
+	 * @var array
+	 */
 	private $cssHexWords = array(
 		'abacas' => 'ABACA5',
 		'abbess' => 'ABBE55',
