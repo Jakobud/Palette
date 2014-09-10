@@ -373,10 +373,10 @@ class Palette
 
 	public function __construct($color = null)
 	{
-			// Normalize input string (to lowercase, remove whitespace)
+		// Normalize input string (to lowercase, remove whitespace)
 		$color = preg_replace("/\s+/", "", strtolower(trim($color, '#')));
 
-			// Determine input color format
+		// Determine input color format
 		if ( preg_match(self::REGEX_HEX, $color) ) {
 			/**
 			 * Hex format
