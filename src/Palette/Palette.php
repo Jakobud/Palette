@@ -610,6 +610,21 @@ class Palette
 	}
 
 	/**
+	 * Convert decimal color value to shorthand hex value
+	 * @param  int $color A value between 0 and 255
+	 * @return string A shorthand hex value between 0 and F
+	 */
+	private function decToShorthandHex($color)
+	{
+		$remainder = $color%17;
+		if ( $remainder > 7 ) {
+			return dechex($color-$remainder+17)[0];
+		} else {
+			return dechex($color-$remainder)[0];
+		}
+	}
+
+	/**
 	 * Output the color in hex format (#rrggbb)
 	 * @return string
 	 */
@@ -626,7 +641,7 @@ class Palette
 	 */
 	public function hexAlpha()
 	{
-		return $this->hex.str_pad(dechex($this->alpha), 2, STR_PAD_LEFT);
+		return $this->hex().dechex(round($this->alpha*255));
 	}
 
 	/**
@@ -639,7 +654,7 @@ class Palette
 		foreach( [$this->red, $this->green, $this->blue] as $color) {
 			$remainder = $color%17;
 			if ( $remainder > 7 ) {
-				$output .= dechex($color-$remainder+17)[0];
+			$output .= $this->decToShorthandHex($color);
 			} else {
 				$output .= dechex($color-$remainder)[0];
 			}
@@ -647,9 +662,13 @@ class Palette
 		return $output;
 	}
 
+	/**
+	 * Output the color in shorthand hex format with alpha #rgba
+	 * @return string
+	 */
 	public function shorthandHexAlpha()
 	{
-		return $this->shorthandHex.str_pad(dechex($this->alpha), 2, STR_PAD_LEFT);
+		return $this->shorthandHex().$this->decToShorthandHex($this->alpha*255);
 	}
 
 	/**
