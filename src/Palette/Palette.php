@@ -586,18 +586,6 @@ class Palette
 	}
 
 	/**
-	 * Convert RGB to HSB
-	 * @param  int $r
-	 * @param  int $g
-	 * @param  int $b
-	 * @return [type]
-	 */
-	private function rgbToHsb($r, $g, $b)
-	{
-
-	}
-
-	/**
 	 * Convert HSL to RGB
 	 * @param  int $h
 	 * @param  int $s
@@ -606,43 +594,55 @@ class Palette
 	 */
 	private function hslToRgb($hue, $saturation, $lightness)
 	{
+		$hue /= 360;
+		$saturation /= 100;
+		$lightness /= 100;
 
+		if ($saturation == 0) {
+			$red = $lightness * 255;
+			$green = $lightness * 255;
+			$blue = $lightness * 255;
+		} else {
+			if ($lightness < 0.5) {
+				$var2 = $lightness * (1 + $saturation);
+			} else {
+				$var2 = ($lightness + $saturation) - ($saturation * $lightness);
+			};
+
+			$var1 = 2 * $lightness - $var2;
+			$red = 255 * $this->hueToRgbChannel($var1, $var2, $hue + (1 / 3));
+			$green = 255 * $this->hueToRgbChannel($var1, $var2, $hue);
+			$blue = 255 * $this->hueToRgbChannel($var1, $var2, $hue - (1 / 3));
+		};
+		$this->red = (int)round($red);
+		$this->green = (int)round($green);
+		$this->blue = (int)round($blue);
 	}
 
 	/**
-	 *  Convert HSB to RGB
-	 * @param  int $h
-	 * @param  int $s
-	 * @param  int $b
+	 * Convert Hue to RGB (used in HSL to RGB Conversion)
+	 * @param  [type] $var1
+	 * @param  [type] $var2
+	 * @param  [type] $vh
 	 * @return [type]
 	 */
-	private function hsbToRgb($h, $s, $b)
+	private function hueToRgbChannel($v1, $v2, $vh)
 	{
+		if ($vh < 0) {
+			$vh += 1;
+		} else if ($vh > 1) {
+			$vh -= 1;
+		};
 
-	}
-
-	/**
-	 * Convert HSL to HSB
-	 * @param  int $h
-	 * @param  int $s
-	 * @param  int $l
-	 * @return [type]
-	 */
-	private function hslToHsb($h, $s, $l)
-	{
-
-	}
-
-	/**
-	 * Convert HSB to HSL
-	 * @param  int $h
-	 * @param  int $s
-	 * @param  int $b
-	 * @return [type]
-	 */
-	private function hsbToHsl($h, $s, $b)
-	{
-
+		if ((6 * $vh) < 1) {
+			return ($v1 + ($v2 - $v1) * 6 * $vh);
+		} else if ((2 * $vh) < 1) {
+			return ($v2);
+		} else if ((3 * $vh) < 2) {
+			return ($v1 + ($v2 - $v1) * ((2 / 3 - $vh) * 6));
+		} else {
+			return ($v1);
+		}
 	}
 
 	/**
