@@ -493,14 +493,56 @@ class Palette
 
 	/**
 	 * Convert RGB to HSL
-	 * @param  int $r
-	 * @param  int $g
-	 * @param  int $b
-	 * @return [type]
+	 * @param  int $red
+	 * @param  int $green
+	 * @param  int $blue
+	 * @return array
+	 * http://serennu.com/colour/rgbtohsl.php
 	 */
-	public function rgbToHsl($r, $g, $b)
+	private function rgbToHsl($red, $green, $blue)
 	{
+		$red /= 255;
+		$green /= 255;
+		$blue /= 255;
 
+		$min = min($red,$green,$blue);
+		$max = max($red,$green,$blue);
+		$diff = $max - $min;
+
+		$lightness = ($max + $min) / 2;
+
+		if ($diff == 0) {
+			$hue = 0;
+			$saturation = 0;
+		} else {
+			if ($lightness < 0.5) {
+				$saturation = $diff / ($max + $min);
+			} else {
+				$saturation = $diff / (2 - $max - $min);
+			};
+
+			$del_r = ((($max - $red) / 6) + ($diff / 2)) / $diff;
+			$del_g = ((($max - $green) / 6) + ($diff / 2)) / $diff;
+			$del_b = ((($max - $blue) / 6) + ($diff / 2)) / $diff;
+
+			if ($max == $red) {
+				$hue = $del_b - $del_g;
+			} elseif ($max == $green) {
+				$hue = (1 / 3) + $del_r - $del_b;
+			} elseif ($max == $blue) {
+				$hue = (2 / 3) + $del_g - $del_r;
+			};
+
+			if ($hue < 0) {
+				$hue += 1;
+			};
+
+			if ($hue > 1) {
+				$hue -= 1;
+			};
+		};
+
+		return array('hue'=>(int)round($hue*360), 'saturation'=>round($saturation*100), 'lightness'=>round($lightness*100));
 	}
 
 	/**
