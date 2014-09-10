@@ -422,7 +422,7 @@ class Palette
 			 */
 			$color = str_replace(['rgb(',')'], '', $color);
 			$pieces = explode(',', $color);
-			$red = (int) $pieces[0];
+			$this->red = (int) $pieces[0];
 			$this->green = (int) $pieces[1];
 			$this->blue = (int) $pieces[2];
 
@@ -433,7 +433,7 @@ class Palette
 			 */
 			$color = str_replace(['rgba(',')'], '', $color);
 			$pieces = explode(',', $color);
-			$red = (int) $pieces[0];
+			$this->red = (int) $pieces[0];
 			$this->green = (int) $pieces[1];
 			$this->blue = (int) $pieces[2];
 			$this->alpha = (float) round($pieces[3], $this->precision);
@@ -615,7 +615,7 @@ class Palette
 	 */
 	public function hex()
 	{
-		return "#".str_pad(dechex($red), 2, STR_PAD_LEFT).
+		return "#".str_pad(dechex($this->red), 2, STR_PAD_LEFT).
 		str_pad(dechex($this->green), 2, STR_PAD_LEFT).
 		str_pad(dechex($this->blue), 2, STR_PAD_LEFT);
 	}
@@ -636,7 +636,7 @@ class Palette
 	public function shorthandHex()
 	{
 		$output = '#';
-		foreach( [$red, $this->green, $this->blue] as $color) {
+		foreach( [$this->red, $this->green, $this->blue] as $color) {
 			$remainder = $color%17;
 			if ( $remainder > 7 ) {
 				$output .= dechex($color-$remainder+17)[0];
@@ -658,7 +658,7 @@ class Palette
 	 */
 	public function webSafeHex()
 	{
-		return "#".dechex(round($red/51)*51).
+		return "#".dechex(round($this->red/51)*51).
 		dechex(round($this->green/51)*51).
 		dechex(round($this->blue/51)*51);
 	}
