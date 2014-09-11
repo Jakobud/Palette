@@ -539,8 +539,51 @@ class Palette
 		}
 
 		unset($this->cssColorNames, $this->cssHexWords);
-		var_dump($this);
+	}
 
+	public function red()
+	{
+		return $this->red;
+	}
+
+	public function green()
+	{
+		return $this->green;
+	}
+
+	public function blue()
+	{
+		return $this->blue;
+	}
+
+	public function alpha()
+	{
+		return $this->alpha;
+	}
+
+	public function hue()
+	{
+		return $this->hue;
+	}
+
+	public function hslSaturation()
+	{
+		return $this->hslSaturation;
+	}
+
+	public function lightness()
+	{
+		return $this->lightness;
+	}
+
+	public function hsvSaturation()
+	{
+		return $this->hsvSaturation;
+	}
+
+	public function value()
+	{
+		return $this->value;
 	}
 
 	/**
