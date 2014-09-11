@@ -7,13 +7,17 @@ class InputTest extends TestFixture
 	public function test_hex_input_white_color()
 	{
 		$color = new Palette("#FFFFFF");
-		$this->assertEquals(255, $color->red(), $color->green(), $color->blue());
+		$this->assertEquals(255, $color->red());
+		$this->assertEquals(255, $color->green());
+		$this->assertEquals(255, $color->blue());
 	}
 
 	public function test_hex_input_black_color()
 	{
 		$color = new Palette("#000000");
-		$this->assertEquals(0, $color->red(), $color->green(), $color->blue());
+		$this->assertEquals(0, $color->red());
+		$this->assertEquals(0, $color->green());
+		$this->assertEquals(0, $color->blue());
 	}
 
 	public function test_hex_input_random_color()
@@ -27,13 +31,17 @@ class InputTest extends TestFixture
 	public function test_hex_input_white_color_without_hash()
 	{
 		$color = new Palette("FFFFFF");
-		$this->assertEquals(255, $color->red(), $color->green(), $color->blue());
+		$this->assertEquals(255, $color->red());
+		$this->assertEquals(255, $color->green());
+		$this->assertEquals(255, $color->blue());
 	}
 
 	public function test_hex_input_black_color_without_hash()
 	{
 		$color = new Palette("000000");
-		$this->assertEquals(0, $color->red(), $color->green(), $color->blue());
+		$this->assertEquals(0, $color->red());
+		$this->assertEquals(0, $color->green());
+		$this->assertEquals(0, $color->blue());
 	}
 
 	public function test_hex_input_random_color_without_hash()
@@ -47,13 +55,17 @@ class InputTest extends TestFixture
 	public function test_short_hex_input_white_color()
 	{
 		$color = new Palette("#FFF");
-		$this->assertEquals(255, $color->red(), $color->green(), $color->blue());
+		$this->assertEquals(255, $color->red());
+		$this->assertEquals(255, $color->green());
+		$this->assertEquals(255, $color->blue());
 	}
 
 	public function test_short_hex_input_black_color()
 	{
 		$color = new Palette("#000");
-		$this->assertEquals(0, $color->red(), $color->green(), $color->blue());
+		$this->assertEquals(0, $color->red());
+		$this->assertEquals(0, $color->green());
+		$this->assertEquals(0, $color->blue());
 	}
 
 	public function test_short_hex_input_random_color()
@@ -67,13 +79,17 @@ class InputTest extends TestFixture
 	public function test_short_hex_input_without_hash_white_color()
 	{
 		$color = new Palette("FFF");
-		$this->assertEquals(255, $color->red(), $color->green(), $color->blue());
+		$this->assertEquals(255, $color->red());
+		$this->assertEquals(255, $color->green());
+		$this->assertEquals(255, $color->blue());
 	}
 
 	public function test_short_hex_input_without_hash_black_color()
 	{
 		$color = new Palette("000");
-		$this->assertEquals(0, $color->red(), $color->green(), $color->blue());
+		$this->assertEquals(0, $color->red());
+		$this->assertEquals(0, $color->green());
+		$this->assertEquals(0, $color->blue());
 	}
 
 	public function test_short_hex_input_without_hash_random_color()
