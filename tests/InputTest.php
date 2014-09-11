@@ -2,7 +2,7 @@
 
 use Palette\Palette;
 
-class InputTest extends TestFixture
+class HexInputTest extends TestFixture
 {
 	public function test_hex_input_white_color()
 	{
