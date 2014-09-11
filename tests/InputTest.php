@@ -99,4 +99,40 @@ class HexInputTest extends TestFixture
 		$this->assertEquals(170, $color->green());
 		$this->assertEquals(51, $color->blue());
 	}
+
+	public function test_hex_input_with_opaque_alpha()
+	{
+		$color = new Palette("#FFFFFFFF");
+		$this->assertEquals(1, $color->alpha());
+	}
+
+	public function test_hex_input_with_transparent_alpha()
+	{
+		$color = new Palette("#FFFFFF00");
+		$this->assertEquals(0, $color->alpha());
+	}
+
+	public function test_hex_input_with_50_percent_alpha()
+	{
+		$color = new Palette("#FFFFFF80");
+		$this->assertEquals(0.5, $color->alpha());
+	}
+
+	public function test_short_hex_input_with_opaque_alpha()
+	{
+		$color = new Palette("#FFFF");
+		$this->assertEquals(1, $color->alpha());
+	}
+
+	public function test_short_hex_input_with_transparent_alpha()
+	{
+		$color = new Palette("#FFF0");
+		$this->assertEquals(0, $color->alpha());
+	}
+
+	public function test_short_hex_input_with_20_percent_alpha()
+	{
+		$color = new Palette("#FFF3");
+		$this->assertEquals(0.2, $color->alpha());
+	}
 }
