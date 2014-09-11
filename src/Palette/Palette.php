@@ -767,4 +767,14 @@ class Palette
 		dechex(round($this->green/51)*51).
 		dechex(round($this->blue/51)*51);
 	}
+
+	public function rgb()
+	{
+		return "rgb(".$this->red.",".$this->green.",".$this->blue.")";
+	}
+
+	public function rgba()
+	{
+		return "rgb(".$this->red.",".$this->green.",".$this->blue.",".$this->alpha.")";
+	}
 }
