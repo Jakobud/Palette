@@ -665,9 +665,31 @@ class Palette
 			};
 
 			$var1 = 2 * $lightness - $var2;
-			$red = 255 * $this->hueToRgbChannel($var1, $var2, $hue + (1 / 3));
-			$green = 255 * $this->hueToRgbChannel($var1, $var2, $hue);
-			$blue = 255 * $this->hueToRgbChannel($var1, $var2, $hue - (1 / 3));
+			$red = $green = $blue = null;
+			foreach( array('red'=>(1/3), 'green'=>0, 'blue'=>(-1/3)) as $color => $value ) {
+				$channelHue = function($var1, $var2, $vh)
+				{
+					if ($vh < 0) {
+						$vh += 1;
+					} else if ($vh > 1) {
+						$vh -= 1;
+					};
+
+					if ((6 * $vh) < 1) {
+						return ($var1 + ($var2 - $var1) * 6 * $vh);
+					} else if ((2 * $vh) < 1) {
+						return ($var2);
+					} else if ((3 * $vh) < 2) {
+						return ($var1 + ($var2 - $var1) * ((2 / 3 - $vh) * 6));
+					} else {
+						return ($var1);
+					}
+				};
+				${$color} = 255 * $channelHue($var1, $var2, $hue + $value);
+			}
+			// $red = 255 * $this->hueToRgbChannel($var1, $var2, $hue + (1 / 3));
+			// $green = 255 * $this->hueToRgbChannel($var1, $var2, $hue);
+			// $blue = 255 * $this->hueToRgbChannel($var1, $var2, $hue - (1 / 3));
 		};
 		$this->red = (int)round($red);
 		$this->green = (int)round($green);
