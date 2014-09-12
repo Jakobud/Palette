@@ -135,4 +135,20 @@ class HexInputTest extends TestFixture
 		$color = new Palette("#FFF3");
 		$this->assertEquals(0.2, $color->alpha());
 	}
+
+	public function test_hex_input_with_spaces()
+	{
+		$color = new Palette("#FF F FF F");
+		$this->assertEquals(255, $color->red());
+		$this->assertEquals(255, $color->green());
+		$this->assertEquals(255, $color->blue());
+	}
+
+	public function test_hex_input_case_insensitivity()
+	{
+		$color = new Palette("#fFffFf");
+		$this->assertEquals(255, $color->red());
+		$this->assertEquals(255, $color->green());
+		$this->assertEquals(255, $color->blue());
+	}
 }
